@@ -83,3 +83,46 @@ baseTimeInput.addEventListener('input', updateClock);
 countrySelect.selectedIndex = 0;
 updateClock();
 setInterval(updateClock, 1000);
+
+// Formulario para añadir países
+const addForm = document.createElement('form');
+addForm.id = 'addCountryForm';
+addForm.innerHTML = `
+  <h2>Añadir país</h2>
+  <input type="text" id="newCountryName" placeholder="Nombre del país" required style="margin-bottom:0.5em;">
+  <input type="text" id="newCountryTimezone" placeholder="Zona horaria (ej: Europe/Paris)" required style="margin-bottom:0.5em;">
+  <button type="submit">Añadir</button>
+`;
+baseContainer.appendChild(addForm);
+
+addForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('newCountryName').value.trim();
+    const timezone = document.getElementById('newCountryTimezone').value.trim();
+    if (!name || !timezone) return;
+    // Añadir al array y al select
+    countries.push({ name, timezone });
+    const option = document.createElement('option');
+    option.value = timezone;
+    option.textContent = name;
+    countrySelect.appendChild(option);
+    // Limpiar campos y seleccionar el nuevo país
+    document.getElementById('newCountryName').value = '';
+    document.getElementById('newCountryTimezone').value = '';
+    countrySelect.value = timezone;
+    updateClock();
+});
+
+// Enlace a ayuda de zonas horarias
+const helpLink = document.createElement('a');
+helpLink.href = 'zonas-horarias.html';
+helpLink.target = '_blank';
+helpLink.textContent = '¿No sabes qué zona horaria poner? Consulta ejemplos y la lista completa aquí.';
+helpLink.style.marginTop = '0.5em';
+baseContainer.appendChild(helpLink);
+
+if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('service-worker.js');
+        });
+    }
