@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hora-mundial-v1';
+const CACHE_NAME = 'hora-mundial-v1.1';
 const urlsToCache = [
   './',
   './index.html',
